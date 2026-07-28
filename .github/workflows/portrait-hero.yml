@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use new portrait hero video
+      - name: Force fresh portrait hero video
         shell: python
         run: |
           from pathlib import Path
           p = Path('website/index.html')
           s = p.read_text()
-          s = s.replace('VID_20260727_034531_448.mp4', 'VID_20260727_180134_822.mp4')
+          s = s.replace('VID_20260727_180134_822.mp4', 'VID_20260727_180134_822.mp4?v=hero-20260727-3')
           p.write_text(s)
       - name: Commit
         run: |
@@ -27,5 +27,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add website/index.html
           git diff --cached --quiet && exit 0
-          git commit -m "Use new uploaded portrait hero video"
+          git commit -m "Force browser refresh for new hero video"
           git push
