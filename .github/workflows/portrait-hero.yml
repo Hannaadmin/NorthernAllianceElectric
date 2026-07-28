@@ -1,0 +1,31 @@
+name: Portrait hero video update
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use new portrait hero video
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('website/index.html')
+          s = p.read_text()
+          s = s.replace('VID_20260727_034531_448.mp4', 'VID_20260727_180134_822.mp4')
+          p.write_text(s)
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add website/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Use new uploaded portrait hero video"
+          git push
